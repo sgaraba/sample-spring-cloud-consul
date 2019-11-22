@@ -43,8 +43,10 @@ public class AccountController {
 	@PutMapping("/withdraw/{id}/{amount}")
 	public Account withdraw(@PathVariable("id") Long id, @PathVariable("amount") int amount) throws JsonProcessingException {
 		Account account = repository.findById(id);
+
 		LOGGER.info("Account found: {}", mapper.writeValueAsString(account));
 		account.setBalance(account.getBalance() - amount);
+
 		LOGGER.info("Current balance: {}", mapper.writeValueAsString(Collections.singletonMap("balance", account.getBalance())));
 		return repository.update(account);
 	}

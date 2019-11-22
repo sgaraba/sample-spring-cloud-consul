@@ -3,10 +3,10 @@ spring:
     name: order-service
   cloud:
     consul:
-      host: 192.168.99.100
+      host: localhost
       port: 8500
       discovery:
-        instance-id: "${spring.cloud.client.hostname}:${spring.application.name}:${random.int[1,999999]}"
+        instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
 
 logging:
   level:
@@ -21,6 +21,9 @@ spring:
     consul:
       discovery:
         instanceZone: zone1
+        #healthCheckPath: ${management.context-path}/health
+        #healthCheckInterval: 15s
+        tags: zone=zone1
 
 ---
 spring:
@@ -29,3 +32,6 @@ spring:
     consul:
       discovery:
         instanceZone: zone2
+        healthCheckPath: ${management.context-path}/health
+        healthCheckInterval: 15s
+        tags: zone=zone2
